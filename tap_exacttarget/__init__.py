@@ -118,8 +118,14 @@ def do_sync(args):
         if SubscriberDataAccessObject.matches_catalog(stream_catalog):
             if not list_subscriber_selected:
                 list_subscriber_selected = True
+
+                list_subscriber_catalog = [c for c in catalog.get("streams") if c.get("tap_stream_id") == "list_subscriber"][0]
+                mdata = metadata.to_map(list_subscriber_catalog['metadata'])
+                mdata = metadata.write(mdata, (), 'selected', True)
+                list_subscriber_catalog['metadata'] = metadata.to_list(mdata)
+
                 stream_accessors.append(ListSubscriberDataAccessObject(
-                    config, state, auth_stub, stream_catalog))
+                    config, state, auth_stub, list_subscriber_catalog))
 
             subscriber_selected = True
             subscriber_catalog = stream_catalog
