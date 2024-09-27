@@ -11,11 +11,11 @@ setup(
     classifiers=['Programming Language :: Python :: 3 :: Only'],
     py_modules=['tap_exacttarget'],
     install_requires=[
-        'funcy==1.9.1',
+        'funcy==2.0',
         'singer-python==5.12.1',
         'python-dateutil==2.6.0',
-        'voluptuous==0.10.5',
-        'Salesforce-FuelSDK==1.3.0'
+        'voluptuous==0.13.1',
+        'Salesforce-FuelSDK @ git+https://github.com/hotgluexyz/FuelSDK-Python.git#egg=Salesforce-FuelSDK', # USING THE HOTGLUE VERSION
     ],
     extras_require={
         'test': [
@@ -29,7 +29,7 @@ setup(
     },
     entry_points='''
     [console_scripts]
-    tap-exacttarget=tap_exacttarget:main
+    tap-salesforce-marketing=tap_exacttarget:main
     ''',
     packages=find_packages(),
     package_data={

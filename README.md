@@ -40,7 +40,7 @@ pip install .
 
 3. Create the config file.
 
-There is a template you can use at `config.json.example`, just copy it to `config.json` in the repo root and insert your client_id, client_secret, tenant_subdomain and refresh_token.
+There is a template you can use at `config.json.example`, just copy it to `config.json` in the repo root and insert your client_id, client_secret, sub_domain and refresh_token.
 
 4. Run the application to generate a catalog.
 

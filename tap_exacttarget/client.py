@@ -41,14 +41,14 @@ def get_auth_stub(config):
         'clientsecret': config['client_secret']
         }
 
-    if config.get('tenant_subdomain'):
+    if config.get('sub_domain'):
         # For S10+ accounts: https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/your-subdomain-tenant-specific-endpoints.htm
 
         params['authenticationurl'] = ('https://{}.auth.marketingcloudapis.com/v1/requestToken'
-                                       .format(config['tenant_subdomain']))
+                                       .format(config['sub_domain']))
         LOGGER.info("Authentication URL is: %s", params['authenticationurl'])
         params['soapendpoint'] = ('https://{}.soap.marketingcloudapis.com/Service.asmx'
-                                  .format(config['tenant_subdomain']))
+                                  .format(config['sub_domain']))
 
     # Set request timeout with config param `request_timeout`
     # If value is 0, "0", "" or not passed then it set timeout to default: 300 seconds.
@@ -71,9 +71,9 @@ def get_auth_stub(config):
         return auth_stub
     except Exception as e:
         LOGGER.info('Failed to auth using V1 endpoint')
-        if not config.get('tenant_subdomain'):
-            LOGGER.warning('No tenant_subdomain found, will not attempt to auth with V2 endpoint')
-            message = "{}. Please check your \'client_id\', \'client_secret\' or try adding the \'tenant_subdomain\'."
+        if not config.get('sub_domain'):
+            LOGGER.warning('No sub_domain found, will not attempt to auth with V2 endpoint')
+            message = "{}. Please check your \'client_id\', \'client_secret\' or try adding the \'sub_domain\'."
             raise Exception(message.format(str(e))) from None
 
     # Next try V2
@@ -82,7 +82,7 @@ def get_auth_stub(config):
         LOGGER.info('Trying to authenticate using V2 endpoint')
         params['useOAuth2Authentication'] = "True"
         params['authenticationurl'] = ('https://{}.auth.marketingcloudapis.com'
-                                       .format(config['tenant_subdomain']))
+                                       .format(config['sub_domain']))
         LOGGER.info("Authentication URL is: %s", params['authenticationurl'])
         auth_stub = FuelSDK.ET_Client(params=params)
 
@@ -91,7 +91,7 @@ def get_auth_stub(config):
             transport=transport)
     except Exception as e:
         LOGGER.info('Failed to auth using V2 endpoint')
-        message = "{}. Please check your \'client_id\', \'client_secret\' or \'tenant_subdomain\'."
+        message = "{}. Please check your \'client_id\', \'client_secret\' or \'sub_domain\'."
         raise Exception(message.format(str(e))) from None
 
     LOGGER.info("Success.")
